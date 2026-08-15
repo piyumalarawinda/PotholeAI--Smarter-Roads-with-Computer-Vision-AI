@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoadVision AI — YOLOv11 Pothole Detection Lab</title>
+    <!-- Google Fonts: Inter & JetBrains Mono for Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="brand">
+            <span class="brand-icon">🕳️</span>
+            <div class="brand-text">
+                <span class="logo-main">RoadVision AI</span>
+                <span class="logo-sub">YOLOv11 Detector</span>
+            </div>
+        </div>
+        
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="home-tab">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Home
+            </button>
+            <button class="tab-btn" data-tab="lab-tab">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Detection Lab
+            </button>
+            <button class="tab-btn" data-tab="insights-tab">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                Model Insights
+            </button>
+            <button class="tab-btn" data-tab="api-tab">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Developer API
+            </button>
+        </nav>
+
+        <div class="status-panel">
+            <span class="status-dot pulsing" id="apiStatusDot"></span>
+            <span id="apiStatusText">Checking API...</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="dashboard-container">
+
+        <!-- Tab 0: Home Page -->
+        <section id="home-tab" class="tab-content active">
+            <div class="home-layout">
+                <!-- Hero Section -->
+                <div class="hero-section glass-card">
+                    <div class="hero-badge">⚡ Next-Gen Road Diagnostics</div>
+                    <h1>Empowering Safe Roads with AI Pothole Detection</h1>
+                    <p>Utilizing high-performance deep neural networks (YOLOv11) to inspect pavement distresses, classify risk thresholds, and automate infrastructure maintenance in real-time.</p>
+                    <button class="btn-primary" id="btnStartDetecting">
+                        Enter Detection Lab
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="section-title-container">
+                    <h2>Core Intelligence Capabilities</h2>
+                    <p>Designed for real-time edge processing and autonomous municipal fleet integrations.</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="glass-card feature-card">
+                        <div class="feature-icon bg-orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <h3>Real-time YOLOv11 Model</h3>
+                        <p>Powered by the latest YOLOv11 Nano architecture. Delivers sub-50ms inference times on modern GPUs and under 300ms on CPU edges.</p>
+                    </div>
+
+                    <div class="glass-card feature-card">
+                        <div class="feature-icon bg-rose">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        </div>
+                        <h3>Risk Severity Assessment</h3>
+                        <p>Automatically flags roads into safety levels (Safe, Moderate, Danger) based on pothole frequency density and prediction confidence scores.</p>
+                    </div>
+
+                    <div class="glass-card feature-card">
+                        <div class="feature-icon bg-emerald">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3>All-Weather Robustness</h3>
+                        <p>Trained with extensive dataset augmentations (blur, brightness adjustment, scale transitions) ensuring detection under Rain, Dusk, and Night conditions.</p>
+                    </div>
+                </div>
+
+                <!-- Workflow Section -->
+                <div class="section-title-container">
+                    <h2>How It Works</h2>
+                    <p>Simple three-step workflow from raw image ingest to structured API payloads.</p>
+                </div>
+
+                <div class="workflow-steps">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <h4>Ingest Road Imagery</h4>
+                        <p>Drag & drop or upload road photos. Supports common high-res digital formats (JPEG, JPG, PNG).</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <h4>AI Bounding Box Generation</h4>
+                        <p>FastAPI parses inputs and executes YOLOv11. Overlays red bounding highlight zones around distress areas.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <h4>Review Logs & Export</h4>
+                        <p>Export precise coordinates and telemetry stats, or integrate directly using our developer API.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 1: Detection Lab -->
+        <section id="lab-tab" class="tab-content">
+            <div class="lab-layout">
+                <!-- Sidebar Controls -->
+                <aside class="lab-sidebar">
+                    <div class="glass-card panel-settings">
+                        <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.5 1z"/></svg> Settings</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <span>Confidence Threshold</span>
+                                <span class="badge-value" id="confValue">0.25</span>
+                            </div>
+                            <input type="range" id="confSlider" min="0.05" max="0.95" step="0.05" value="0.25">
+                            <p class="setting-desc">Ignores detections below this level of certainty.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card panel-stats">
+                        <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Session Activity</h3>
+                        <div class="session-stat-grid">
+                            <div class="session-stat">
+                                <span class="stat-num" id="sessionProcessed">0</span>
+                                <span class="stat-label">Processed</span>
+                            </div>
+                            <div class="session-stat">
+                                <span class="stat-num" id="sessionDetected">0</span>
+                                <span class="stat-label">Potholes</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Detection Workspace -->
+                <div class="lab-workspace">
+                    <div class="workspace-card main-analysis-card">
+                        
+                        <!-- Upload Stage -->
+                        <div class="upload-stage" id="uploadStage">
+                            <div class="drop-zone" id="dropZone">
+                                <input type="file" id="fileInput" accept="image/*" hidden>
+                                <div class="drop-zone-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                </div>
+                                <h4>Drag & drop road image here</h4>
+                                <p>Supports JPG, JPEG, PNG formats</p>
+                                <span class="btn-browse">Browse Files</span>
+                            </div>
+
+                            <!-- Sample Grid -->
+                            <div class="sample-grid-container">
+                                <h5>Test on a sample image:</h5>
+                                <div class="sample-grid">
+                                    <div class="sample-card" data-sample="daytime">
+                                        <img src="samples/daytime.jpg" alt="Daytime Road">
+                                        <span class="sample-tag">Daytime</span>
+                                    </div>
+                                    <div class="sample-card" data-sample="nighttime">
+                                        <img src="samples/nighttime.jpg" alt="Night Road">
+                                        <span class="sample-tag">Nighttime</span>
+                                    </div>
+                                    <div class="sample-card" data-sample="rainy">
+                                        <img src="samples/rainy.jpg" alt="Rainy Road">
+                                        <span class="sample-tag">Rainy</span>
+                                    </div>
+                                    <div class="sample-card" data-sample="closeup">
+                                        <img src="samples/closeup.jpg" alt="Close-up">
+                                        <span class="sample-tag">Close-up</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Stage -->
+                        <div class="results-stage hidden" id="resultsStage">
+                            <div class="results-header">
+                                <button class="btn-secondary" id="btnBackToUpload">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                                    Upload New Image
+                                </button>
+                                <span class="telemetry-badge"><span id="telemetryTime">0</span> ms inference time</span>
+                            </div>
+
+                            <div class="split-view">
+                                <!-- Image Panel -->
+                                <div class="image-viewer-container">
+                                    <div class="toggle-view-container">
+                                        <button class="toggle-btn active" id="viewAnnotated">Annotated View</button>
+                                        <button class="toggle-btn" id="viewOriginal">Original Image</button>
+                                    </div>
+                                    <div class="viewer-window">
+                                        <img id="annotatedImage" src="" alt="Detections">
+                                        <img id="originalImage" src="" alt="Original" class="hidden">
+                                        <div class="loader-overlay hidden" id="loaderOverlay">
+                                            <div class="spinner"></div>
+                                            <p>Processing image with YOLOv11...</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Analytics / Detections Panel -->
+                                <div class="detections-info-panel">
+                                    <!-- Metric Cards -->
+                                    <div class="metric-row">
+                                        <div class="metric-mini-card" id="cardPotholes">
+                                            <span class="metric-title">Potholes Found</span>
+                                            <span class="metric-val" id="valPotholes">0</span>
+                                        </div>
+                                        <div class="metric-mini-card" id="cardConfidence">
+                                            <span class="metric-title">Avg Confidence</span>
+                                            <span class="metric-val" id="valConfidence">0%</span>
+                                        </div>
+                                        <div class="metric-mini-card" id="cardRisk">
+                                            <span class="metric-title">Road Risk Level</span>
+                                            <span class="metric-val text-green" id="valRisk">None</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Detections List -->
+                                    <div class="detections-list-container">
+                                        <h4>Detected Potholes</h4>
+                                        <div class="detections-list" id="detectionsList">
+                                            <!-- Dynamic items populate here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Model Insights -->
+        <section id="insights-tab" class="tab-content">
+            <div class="insights-layout">
+                <div class="glass-card insights-header-card">
+                    <h2>YOLOv11 Pothole Detector</h2>
+                    <p>Learn about the neural network structure, training configurations, and local parameters driving this application.</p>
+                </div>
+
+                <div class="insights-grid">
+                    <!-- Tech Specs -->
+                    <div class="glass-card">
+                        <h3>Model Architecture</h3>
+                        <table class="specs-table">
+                            <tr>
+                                <td>Framework</td>
+                                <td>Ultralytics YOLOv11</td>
+                            </tr>
+                            <tr>
+                                <td>Model Size</td>
+                                <td>Nano (yolo11n.pt)</td>
+                            </tr>
+                            <tr>
+                                <td>Parameters Count</td>
+                                <td>~2.6 Million</td>
+                            </tr>
+                            <tr>
+                                <td>Resolution</td>
+                                <td>640 x 640 pixels</td>
+                            </tr>
+                            <tr>
+                                <td>Inference Time</td>
+                                <td>~15-40ms (Device dependent)</td>
+                            </tr>
+                            <tr>
+                                <td>Weight Size</td>
+                                <td>5.2 MB (highly optimized)</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Training Metrics -->
+                    <div class="glass-card">
+                        <h3>Training & Validation Metrics</h3>
+                        <div class="performance-metrics-grid">
+                            <div class="perf-card">
+                                <div class="perf-title">mAP50</div>
+                                <div class="perf-val">86.7%</div>
+                                <div class="progress-bar-container"><div class="progress-bar" style="width: 86.7%"></div></div>
+                            </div>
+                            <div class="perf-card">
+                                <div class="perf-title">Precision (B)</div>
+                                <div class="perf-val">89.4%</div>
+                                <div class="progress-bar-container"><div class="progress-bar" style="width: 89.4%"></div></div>
+                            </div>
+                            <div class="perf-card">
+                                <div class="perf-title">Recall (B)</div>
+                                <div class="perf-val">82.1%</div>
+                                <div class="progress-bar-container"><div class="progress-bar" style="width: 82.1%"></div></div>
+                            </div>
+                            <div class="perf-card">
+                                <div class="perf-title">mAP50-95</div>
+                                <div class="perf-val">53.2%</div>
+                                <div class="progress-bar-container"><div class="progress-bar" style="width: 53.2%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card training-info-card">
+                    <h3>Training Details</h3>
+                    <p>The model was trained on a highway road condition dataset focusing specifically on identifying asphalt pavement distresses (potholes, severe cracks). Augmentations including brightness adjustment, blur, scaling, and flip transformations were utilized to ensure model robustness under diverse environmental and weather conditions (Rain, Night, Dusk).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 3: Developer API -->
+        <section id="api-tab" class="tab-content">
+            <div class="api-layout">
+                <div class="glass-card api-header-card">
+                    <h2>Developer Integration Portal</h2>
+                    <p>Build applications on top of the RoadVision detection endpoint. Integration takes just a few lines of code.</p>
+                </div>
+
+                <div class="api-container-grid">
+                    <!-- Left Side: Schema Description -->
+                    <div class="glass-card api-schema-card">
+                        <h3>API Specifications</h3>
+                        
+                        <div class="api-endpoint">
+                            <span class="method get">GET</span>
+                            <span class="path">/</span>
+                            <span class="endpoint-desc">Verify if detection backend is active.</span>
+                        </div>
+
+                        <div class="api-endpoint">
+                            <span class="method post">POST</span>
+                            <span class="path">/detect</span>
+                            <span class="endpoint-desc">Executes detection on raw image payload.</span>
+                        </div>
+
+                        <h4>Request Parameters (POST /detect)</h4>
+                        <table class="api-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>file</code></td>
+                                    <td>binary</td>
+                                    <td>multipart/form-data</td>
+                                    <td>Required. The road image to run YOLO inference on.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>conf</code></td>
+                                    <td>float</td>
+                                    <td>query parameter</td>
+                                    <td>Optional. Confidence threshold. Defaults to <code>0.25</code>.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>Response Payload (JSON)</h4>
+                        <div class="json-viewer-container">
+                            <pre><code>{
+  "count": 2,
+  "detections": [
+    {
+      "confidence": 0.892,
+      "bbox": [124.5, 301.2, 250.0, 480.5],
+      "class": "pothole"
+    }
+  ],
+  "image": "iVBORw0KGgoAAAANSUhEUgAA...", // Base64 Jpeg
+  "inference_time_ms": 32.4
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Code Snippets -->
+                    <div class="glass-card api-code-card">
+                        <div class="code-tabs">
+                            <button class="code-tab-btn active" data-lang="curl">cURL</button>
+                            <button class="code-tab-btn" data-lang="python">Python</button>
+                            <button class="code-tab-btn" data-lang="js">JavaScript</button>
+                        </div>
+                        <div class="code-snippet-window">
+                            <!-- cURL -->
+                            <div class="code-snippet active" id="code-curl">
+                                <pre><code class="language-bash">curl -X POST "http://localhost:8008/detect?conf=0.25" \
+  -H "accept: application/json" \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@road_image.jpg;type=image/jpeg"</code></pre>
+                            </div>
+                            <!-- Python -->
+                            <div class="code-snippet" id="code-python">
+                                <pre><code class="language-python">import requests
+
+url = "http://localhost:8008/detect"
+params = {"conf": 0.25}
+
+with open("road_image.jpg", "rb") as f:
+    files = {"file": f}
+    response = requests.post(url, files=files, params=params)
+
+data = response.json()
+print(f"Detected {data['count']} potholes")
+# Base64 image payload is inside data['image']</code></pre>
+                            </div>
+                            <!-- JavaScript -->
+                            <div class="code-snippet" id="code-js">
+                                <pre><code class="language-javascript">const fileInput = document.querySelector('input[type="file"]');
+const formData = new FormData();
+formData.append('file', fileInput.files[0]);
+
+const response = await fetch('http://localhost:8008/detect?conf=0.25', {
+  method: 'POST',
+  body: formData
+});
+
+const data = await response.json();
+console.log(`Detected ${data.count} potholes`);
+// Display base64 jpeg: "data:image/jpeg;base64," + data.image</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>Developed with YOLOv11 & FastAPI for Road Infrastructure Inspections &copy; 2026</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
